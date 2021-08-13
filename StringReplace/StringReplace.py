@@ -3,6 +3,7 @@ import glob
 import re
 
 # Need to commit and get karim to access this code so he can test with all files and cross reference with his handmade ones
+# If the string does not match the format, note the page name and the line number. 
 
 def string_replace():
 
@@ -20,6 +21,7 @@ def string_replace():
 
     # Loop through each file
     for file in xaml_files:
+        i = 0
 
         # read all lines of the file into list
         f = open(file, 'r')
@@ -30,17 +32,22 @@ def string_replace():
 
         # iterate through lines
         for line in content:
+            i += 1
             
             if 'Text=\"{' in line:
                 updated_content.append(line)
             elif 'Text=' in line:
-                print("line")
-                print(line)
+              #  print("line")
+             #   print(line)
                 re_str = re.compile('Text=\"[^\"]*\" ')
                 str = re_str.findall(line)
-                print(str)
+                if str == []:
+                    print(file)
+                    print(i)
+                    continue
+              #  print(str)
                 stripped = str[0][5:]
-                print(stripped)
+              #  print(stripped)
 
                 if stripped not in strings_dict:
                     index = 'var%s' % var_count
@@ -53,8 +60,8 @@ def string_replace():
                 original_str = str[0]
                 updated_str = 'Text=\"{x:Static Resource:ApplicationResource.%s}\" ' % index
                 updated_line = line.replace(original_str, updated_str)
-                print(updated_str)
-                print(updated_line)
+          #      print(updated_str)
+           #     print(updated_line)
 
                 updated_content.append(updated_line)
                 
@@ -78,7 +85,7 @@ def string_replace():
     file = 'C:/Users/stazy/source/repos/EmergConnect/EmergConnect/EmergConnect/RecourseFiles/ApplicationResource2.resx'
     f = open(file, 'r')
     lines = f.readlines()
-    print(lines)
+#    print(lines)
     f.close()
     file = 'C:/Users/stazy/source/repos/EmergConnect/EmergConnect/EmergConnect/RecourseFiles/ApplicationResource3.resx'
     index = 119
@@ -90,6 +97,7 @@ def string_replace():
         str = p1 + key + p2 + reversed_dictionary[key] + p3
         lines.insert(index, str)
         index += 3
+    lines.append('</root>')
     f.writelines(lines)
     f.close()
 

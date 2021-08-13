@@ -15,7 +15,6 @@ def string_replace():
     for file in glob.glob('C:/Users/stazy/Source/Repos/EmergConnect/EmergConnect/EmergConnect/Pages/*.xaml'):
         xaml_files.append(file)
 
-    # print(files)
     var_count = 1
     strings_dict = {}
 
@@ -37,17 +36,13 @@ def string_replace():
             if 'Text=\"{' in line:
                 updated_content.append(line)
             elif 'Text=' in line:
-              #  print("line")
-             #   print(line)
                 re_str = re.compile('Text=\"[^\"]*\" ')
                 str = re_str.findall(line)
                 if str == []:
                     print(file)
                     print(i)
                     continue
-              #  print(str)
                 stripped = str[0][5:]
-              #  print(stripped)
 
                 if stripped not in strings_dict:
                     index = 'var%s' % var_count
@@ -60,13 +55,14 @@ def string_replace():
                 original_str = str[0]
                 updated_str = 'Text=\"{x:Static Resource:ApplicationResource.%s}\" ' % index
                 updated_line = line.replace(original_str, updated_str)
-          #      print(updated_str)
-           #     print(updated_line)
 
                 updated_content.append(updated_line)
                 
             else:
                 updated_content.append(line)
+                # if this is the base pages line and there is not the line we want, append it next in line
+                if 'd:BasePage' in line and 'xmlns:Resource=\"clr-namespace:EmergConnect.RecourseFiles\"' not in content:
+                    updated_content.append('xmlns:Resource=\"clr-namespace:EmergConnect.RecourseFiles\"')
 
         # Write all of updated_content to a new file
         # Create new filepath name
@@ -85,7 +81,6 @@ def string_replace():
     file = 'C:/Users/stazy/source/repos/EmergConnect/EmergConnect/EmergConnect/RecourseFiles/ApplicationResource2.resx'
     f = open(file, 'r')
     lines = f.readlines()
-#    print(lines)
     f.close()
     file = 'C:/Users/stazy/source/repos/EmergConnect/EmergConnect/EmergConnect/RecourseFiles/ApplicationResource3.resx'
     index = 119

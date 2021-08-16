@@ -41,6 +41,7 @@ def string_replace():
                 if str == []:
                     print(file)
                     print(i)
+                    updated_content.append(line)
                     continue
                 stripped = str[0][5:]
 

@@ -61,9 +61,11 @@ def string_replace():
                 
             else:
                 updated_content.append(line)
+                if '</d:BasePage>' in line:
+                    continue
                 # if this is the base pages line and there is not the line we want, append it next in line
-                if 'd:BasePage' in line and 'xmlns:Resource=\"clr-namespace:EmergConnect.RecourseFiles\"' not in content:
-                    updated_content.append('xmlns:Resource=\"clr-namespace:EmergConnect.RecourseFiles\"')
+                elif 'd:BasePage' in line and 'xmlns:Resource=\"clr-namespace:EmergConnect.RecourseFiles\"' not in content:
+                    updated_content.append('\t\t\txmlns:Resource=\"clr-namespace:EmergConnect.RecourseFiles\"\n')
 
         # Write all of updated_content to a new file
         # Create new filepath name
